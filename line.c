@@ -3,22 +3,10 @@
 #include <math.h>
 #include <errno.h>
 #include <limits.h>
+#include "line.h"
 
-//basic struct of data every point has
-struct pixels {
-	
-	int x_pos;
-	int y_pos;
 
-	//wether to draw as a line or as a star
-	int is_line;
 
-};
-
-// function prototypes
-void draw( int x_size, int y_size, struct pixels *pixel );
-void plot( int x, int y, int x_size, int y_size, struct pixels *pixel );
-int argtoint( char *arg );
 
 int main(int argc, char **argv)
 {
@@ -52,10 +40,10 @@ int main(int argc, char **argv)
 	}
 
 	// get coordinates for the line beginning and the line end
-	int x0 = argtoint(argv[3]);
-	int y0 = argtoint(argv[4]);
-	int x1 = argtoint(argv[5]);
-	int y1 = argtoint(argv[6]); 
+	int x0 = argtoint(argv[3])-1;
+	int y0 = argtoint(argv[4])-1;
+	int x1 = argtoint(argv[5])-1;
+	int y1 = argtoint(argv[6])-1; 
 	int dx = x1-x0;
 	int dy = y1-y0;
 	//error stuff is needed for the Bresenham's line algorithm
