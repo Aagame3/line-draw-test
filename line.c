@@ -11,15 +11,30 @@
 int main(int argc, char **argv)
 {
 	//basic error checking
-	if(argc!=7)
+	if(argc==7)
 	{
-		printf("Usage: line size_x size_y x0 y0 x1 y1 ");
-		return 1;
+		// initialize grid size
+		x_size = argtoint(argv[1]);
+		y_size = argtoint(argv[2]);
+
+
+		// get coordinates for the line beginning and the line end
+		x_start = argtoint(argv[3])-1;
+		y_start = argtoint(argv[4])-1;
+		x_end = argtoint(argv[5])-1;
+		y_end = argtoint(argv[6])-1; 
+	} else 
+	{
+		x_size = 25;
+		y_size = 25;
+
+		x_start = 5;
+		y_start = 5;
+		x_end = 15;
+		y_end = 20; 
 	}
 
-	// initialize grid size
-	int x_size = argtoint(argv[1]);
-	int y_size = argtoint(argv[2]);
+
 
 	// get a struct big enough
 	struct pixels pixel[x_size*y_size];
@@ -39,21 +54,17 @@ int main(int argc, char **argv)
 		}
 	}
 
-	// get coordinates for the line beginning and the line end
-	int x0 = argtoint(argv[3])-1;
-	int y0 = argtoint(argv[4])-1;
-	int x1 = argtoint(argv[5])-1;
-	int y1 = argtoint(argv[6])-1; 
-	int dx = x1-x0;
-	int dy = y1-y0;
+
+	int dx = x_end-x_start;
+	int dy = y_end-y_start;
 	//error stuff is needed for the Bresenham's line algorithm
 	float deltaerr = abs(dy/dx);
 	float err = 0.0;
-	int y = y0;
+	int y = y_start;
 
 	//loop trough all the x-coordinates of the line and calculate the correct y-value
 	//with the Bresenham's algorithm. Straight from wikipedia
-	for(int x=x0;x<x1;x++)
+	for(int x=x_start;x<x_end;x++)
 	{
 		plot(x, y, x_size, y_size, pixel);
 		err = err + deltaerr;
