@@ -11,6 +11,7 @@
 
 void init(int x_size, int y_size, int x_start, int y_start, int x_end, int y_end, struct pixels* pixel )
 {
+	size_t len = x_size*y_size;
 
 	//loops every pixel and add coordinate pair and an initial is_line value
 	int offset = 0;
@@ -24,32 +25,39 @@ void init(int x_size, int y_size, int x_start, int y_start, int x_end, int y_end
 			offset++;
 		}
 	}
-
-
-	int dx = x_end-x_start;
-	int dy = y_end-y_start;
-	//error stuff is needed for the Bresenham's line algorithm
-	float deltaerr = abs(dy/dx);
-	float err = 0.0;
-
-	int y = y_start;
-
-	//loop trough all the x-coordinates of the line and calculate the correct y-value
-	//with the Bresenham's algorithm. Straight from wikipedia
-	for(int x=x_start;x<x_end;x++)
-	{
-		plot(x, y, x_size, y_size, pixel);
-		err = err + deltaerr;
-		if (err >= 0.5)
-		{
-			y = y + copysignf(1.0, dy);
-			err = err - 1.0;
-		}
-	}
+	drawline(x_start, y_start, x_end, y_end, len, pixel);
 
 	return;
 }
 
+void drawline(int x_start, int y_start, int x_end, int y_end, size_t len, struct pixels* pixel)
+{
+    int dx, dy, p, x, y;
+ 
+	dx=x_end-x_start;
+	dy=y_end-y_start;
+ 
+	x=x_start;
+	y=y_start;
+ 
+	p=2*dy-dx;
+ 
+	while(x<x_end)
+	{
+		if(p>=0)
+		{
+			plot(x,y,len, pixel);
+			y=y+1;
+			p=p+2*dy-2*dx;
+		}
+		else
+		{
+			plot(x,y,len, pixel);
+			p=p+2*dy;
+		}
+		x=x+1;
+	}
+}
 //function to draw the grid and if it draws a dot or a line
 //lots of if statements for \n printing. Could probably be
 //improved upon
@@ -78,14 +86,14 @@ void draw(int x_size, int y_size, struct pixels *pixel)
 
 //This is a function that searches the pixels with the correct coordinate pair
 //to draw as a line
-void plot(int x, int y, int x_size, int y_size, struct pixels *pixel)
+void plot(int x, int y, size_t len, struct pixels *pixel)
 {
-	for(int i=0;i<(x_size*y_size);i++)
+	for(int i=0;i<len;i++)
 	{
 		if(pixel[i].x_pos == x && pixel[i].y_pos == y)
 		{
 			pixel[i].is_line=1;
-		}
+		}		
 	}
 }
 
