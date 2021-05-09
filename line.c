@@ -1,49 +1,20 @@
+#include "line.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
 #include <errno.h>
+#include <ncurses.h>
 #include <limits.h>
-#include "line.h"
 
 
 
 
-int main(int argc, char **argv)
+void init(int x_size, int y_size, int x_start, int y_start, int x_end, int y_end, struct pixels* pixel )
 {
-	//basic error checking
-	if(argc==7)
-	{
-		// initialize grid size
-		x_size = argtoint(argv[1]);
-		y_size = argtoint(argv[2]);
 
-
-		// get coordinates for the line beginning and the line end
-		x_start = argtoint(argv[3])-1;
-		y_start = argtoint(argv[4])-1;
-		x_end = argtoint(argv[5])-1;
-		y_end = argtoint(argv[6])-1; 
-	} else 
-	{
-		x_size = 25;
-		y_size = 25;
-
-		x_start = 5;
-		y_start = 5;
-		x_end = 15;
-		y_end = 20; 
-	}
-
-
-
-	// get a struct big enough
-	struct pixels pixel[x_size*y_size];
-
-
-	//not sure how this works but it gets the job done
 	//loops every pixel and add coordinate pair and an initial is_line value
 	int offset = 0;
-	for(int i=0;i<y_size;i++)
+	for(int i=0;i<x_size;i++)
 	{
 		for(int j=0;j<y_size;j++)
 		{
@@ -60,6 +31,7 @@ int main(int argc, char **argv)
 	//error stuff is needed for the Bresenham's line algorithm
 	float deltaerr = abs(dy/dx);
 	float err = 0.0;
+
 	int y = y_start;
 
 	//loop trough all the x-coordinates of the line and calculate the correct y-value
@@ -75,8 +47,7 @@ int main(int argc, char **argv)
 		}
 	}
 
-	draw( x_size, y_size, pixel );
-	return 0;
+	return;
 }
 
 //function to draw the grid and if it draws a dot or a line
