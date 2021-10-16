@@ -15,7 +15,7 @@ int main(int argc, char **argv)
 
 	initscr();
 	printw("Give first coordinate ");
-	scanw("%d%d", &x_start, &y_end);
+	scanw("%d%d", &x_start, &y_start);
 	printw("Give second coordinate ");
 	scanw("%d%d",&x_end, &y_end);
 
